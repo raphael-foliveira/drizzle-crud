@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { RouteHandler } from 'fastify';
 import { database } from './database';
-import { tasks, users, Task } from './schemas';
+import { TaskInsert, UserInsert, tasks, users } from './schemas';
 
 const getHome: RouteHandler = async (_, res) => {
   return res.status(200).send({ message: 'hello, world!' });
@@ -25,7 +25,7 @@ const getTasks: RouteHandler = async (_, res) => {
 };
 
 const createTask: RouteHandler<{
-  Body: Task;
+  Body: TaskInsert;
 }> = async (req, res) => {
   const { title, description, userId } = req.body;
 
@@ -49,10 +49,7 @@ const getUsers: RouteHandler = async (_, res) => {
   return res.status(200).send(result);
 };
 
-const createUser: RouteHandler<{ Body: { email: string } }> = async (
-  req,
-  res
-) => {
+const createUser: RouteHandler<{ Body: UserInsert }> = async (req, res) => {
   const { email } = req.body;
   const user = await database
     .insert(users)
