@@ -1,0 +1,29 @@
+{
+  "name": "fastify-drizzle",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/main.ts",
+    "test": "jest",
+    "makemigrations": "npx drizzle-kit generate:pg",
+    "migrate": "npx tsx src/migrate.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.6",
+    "fastify": "^4.26.2",
+    "pg": "^8.11.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.2",
+    "@types/pg": "^8.11.4",
+    "drizzle-kit": "^0.20.14",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}
