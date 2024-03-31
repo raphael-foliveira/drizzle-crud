@@ -1,6 +1,7 @@
 import { serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
 import { pgTable, integer } from 'drizzle-orm/pg-core';
 import { users } from './users.schema';
+import { relations } from 'drizzle-orm';
 
 export const tasks = pgTable('tasks', {
   id: serial('id').primaryKey(),
@@ -16,3 +17,12 @@ export const tasks = pgTable('tasks', {
 
 export type Task = typeof tasks.$inferSelect;
 export type TaskInsert = typeof tasks.$inferInsert;
+
+export const tasksRelations = relations(tasks, ({ one }) => {
+  return {
+    user: one(users, {
+      fields: [tasks.userId],
+      references: [users.id],
+    }),
+  };
+});

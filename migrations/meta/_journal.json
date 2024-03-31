@@ -36,6 +36,13 @@
       "when": 1711883204036,
       "tag": "0004_sharp_ego",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1711925536247,
+      "tag": "0005_rapid_swarm",
+      "breakpoints": true
     }
   ]
 }
