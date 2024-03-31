@@ -3,13 +3,11 @@ import { RouteHandler } from 'fastify';
 import { database } from './database';
 import { TaskInsert, UserInsert, tasks, users } from './schemas';
 
-const getHome: RouteHandler = async (_, res) => {
+export const getHome: RouteHandler = async (_, res) => {
   return res.status(200).send({ message: 'hello, world!' });
 };
 
-export const homeController = { getHome };
-
-const getTasks: RouteHandler = async (_, res) => {
+export const getTasks: RouteHandler = async (_, res) => {
   const result = await database
     .select({
       id: tasks.id,
@@ -24,7 +22,7 @@ const getTasks: RouteHandler = async (_, res) => {
   return res.status(200).send(result);
 };
 
-const createTask: RouteHandler<{
+export const createTask: RouteHandler<{
   Body: TaskInsert;
 }> = async (req, res) => {
   const { title, description, userId } = req.body;
@@ -42,14 +40,15 @@ const createTask: RouteHandler<{
   return res.status(201).send(task);
 };
 
-export const tasksController = { createTask, getTasks };
-
-const getUsers: RouteHandler = async (_, res) => {
+export const getUsers: RouteHandler = async (_, res) => {
   const result = await database.select().from(users);
   return res.status(200).send(result);
 };
 
-const createUser: RouteHandler<{ Body: UserInsert }> = async (req, res) => {
+export const createUser: RouteHandler<{ Body: UserInsert }> = async (
+  req,
+  res
+) => {
   const { email } = req.body;
   const user = await database
     .insert(users)
@@ -57,5 +56,3 @@ const createUser: RouteHandler<{ Body: UserInsert }> = async (req, res) => {
     .returning({ id: users.id, email: users.email });
   return res.status(201).send(user);
 };
-
-export const usersController = { createUser, getUsers };

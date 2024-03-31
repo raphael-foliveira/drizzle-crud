@@ -1,19 +1,21 @@
 import fastify from 'fastify';
 import {
-  homeController,
-  tasksController,
-  usersController,
+  getHome,
+  getTasks,
+  createTask,
+  getUsers,
+  createUser,
 } from './controllers';
 
 const app = fastify({ logger: true });
 
 const registerPlugins = async () => {
   await app.register(async (app) => {
-    app.get('/', homeController.getHome);
-    app.get('/tasks', tasksController.getTasks);
-    app.post('/tasks', tasksController.createTask);
-    app.get('/users', usersController.getUsers);
-    app.post('/users', usersController.createUser);
+    app.get('/', getHome);
+    app.get('/tasks', getTasks);
+    app.post('/tasks', createTask);
+    app.get('/users', getUsers);
+    app.post('/users', createUser);
   });
   console.log(app.printRoutes());
 };
