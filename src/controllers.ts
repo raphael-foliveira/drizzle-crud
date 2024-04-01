@@ -8,19 +8,7 @@ export const getHome: RouteHandler = async (_, res) => {
 };
 
 export const getTasks: RouteHandler = async (_, res) => {
-  // const result = await database
-  //   .select({
-  //     id: tasks.id,
-  //     title: tasks.title,
-  //     description: tasks.description,
-  //     completed: tasks.completed,
-  //     user: { id: users.id, email: users.email },
-  //   })
-  //   .from(tasks)
-  //   .innerJoin(users, eq(tasks.userId, users.id));
-
   const result = await database.query.tasks.findMany({ with: { user: true } });
-
   return res.status(200).send(result);
 };
 
@@ -43,8 +31,19 @@ export const createTask: RouteHandler<{
 };
 
 export const getUsers: RouteHandler = async (_, res) => {
-  const result = await database.select().from(users);
-  return res.status(200).send(result);
+  const result = await database
+    .select()
+    .from(users)
+    .innerJoin(tasks, eq(tasks.userId, users.id));
+
+  const usersResult = result.reduce<Record<string, any>>((acc, row) => {
+    if (!acc[row.users.id]) {
+      acc[row.users.id] = { ...row.users, tasks: [] };
+    }
+    acc[row.users.id].tasks.push(row.tasks);
+    return acc;
+  }, {});
+  return res.status(200).send(Object.values(usersResult));
 };
 
 export const createUser: RouteHandler<{ Body: UserInsert }> = async (

@@ -43,6 +43,13 @@
       "when": 1711925536247,
       "tag": "0005_rapid_swarm",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1711928303234,
+      "tag": "0006_add_user_name",
+      "breakpoints": true
     }
   ]
 }

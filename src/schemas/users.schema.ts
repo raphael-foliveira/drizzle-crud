@@ -6,6 +6,7 @@ import { tasks } from './tasks.schema';
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   email: varchar('email').notNull().unique(),
+  name: varchar('name').notNull().default('UNKNOWN'),
 });
 
 export type User = typeof users.$inferSelect;
