@@ -8,24 +8,29 @@ export const getHome: RouteHandler = async (_, res) => {
 };
 
 export const getTasks: RouteHandler = async (_, res) => {
-  const result = await database.query.tasks.findMany({ with: { user: true } });
+  const result = await database
+    .select({
+      id: tasks.id,
+      title: tasks.title,
+      description: tasks.description,
+      completed: tasks.completed,
+      user: { id: users.id, email: users.email, name: users.name },
+    })
+    .from(tasks)
+    .leftJoin(users, eq(tasks.userId, users.id));
+
   return res.status(200).send(result);
 };
 
 export const createTask: RouteHandler<{
   Body: TaskInsert;
-}> = async (req, res) => {
-  const { title, description, userId } = req.body;
-
-  const task = await database
-    .insert(tasks)
-    .values({ title, description, userId })
-    .returning({
-      id: tasks.id,
-      title: tasks.title,
-      description: tasks.description,
-      completed: tasks.completed,
-    });
+}> = async ({ body }, res) => {
+  const task = await database.insert(tasks).values(body).returning({
+    id: tasks.id,
+    title: tasks.title,
+    description: tasks.description,
+    completed: tasks.completed,
+  });
 
   return res.status(201).send(task);
 };
@@ -34,7 +39,7 @@ export const getUsers: RouteHandler = async (_, res) => {
   const result = await database
     .select()
     .from(users)
-    .innerJoin(tasks, eq(tasks.userId, users.id));
+    .leftJoin(tasks, eq(users.id, tasks.userId));
 
   const usersResult = result.reduce<Record<string, any>>((acc, row) => {
     if (!acc[row.users.id]) {
@@ -48,7 +53,7 @@ export const getUsers: RouteHandler = async (_, res) => {
 
 export const createUser: RouteHandler<{ Body: UserInsert }> = async (
   req,
-  res
+  res,
 ) => {
   const { email } = req.body;
   const user = await database
