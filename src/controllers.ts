@@ -25,7 +25,7 @@ export const getTasks: RouteHandler = async (_, res) => {
 export const createTask: RouteHandler<{
   Body: TaskInsert;
 }> = async ({ body }, res) => {
-  const task = await database.insert(tasks).values(body).returning({
+  const [task] = await database.insert(tasks).values(body).returning({
     id: tasks.id,
     title: tasks.title,
     description: tasks.description,
@@ -52,13 +52,12 @@ export const getUsers: RouteHandler = async (_, res) => {
 };
 
 export const createUser: RouteHandler<{ Body: UserInsert }> = async (
-  req,
+  { body },
   res,
 ) => {
-  const { email } = req.body;
-  const user = await database
+  const [user] = await database
     .insert(users)
-    .values({ email })
+    .values(body)
     .returning({ id: users.id, email: users.email });
   return res.status(201).send(user);
 };

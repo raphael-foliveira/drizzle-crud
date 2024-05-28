@@ -2,6 +2,7 @@ import { serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
 import { pgTable, integer } from 'drizzle-orm/pg-core';
 import { users } from './users.schema';
 import { relations } from 'drizzle-orm';
+import { z } from 'zod';
 
 export const tasks = pgTable('tasks', {
   id: serial('id').primaryKey(),
@@ -25,4 +26,11 @@ export const tasksRelations = relations(tasks, ({ one }) => {
       references: [users.id],
     }),
   };
+});
+
+export const createTaskSchema = z.object({
+  title: z.string(),
+  userId: z.number(),
+  description: z.string().optional(),
+  completed: z.boolean().default(false),
 });
