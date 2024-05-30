@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import { serial, varchar } from 'drizzle-orm/pg-core';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { tasks } from './tasks.schema';
+import { z } from 'zod';
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -16,4 +17,9 @@ export const usersRelations = relations(users, ({ many }) => {
   return {
     tasks: many(tasks),
   };
+});
+
+export const createUserSchema = z.object({
+  email: z.string(),
+  name: z.string().optional(),
 });

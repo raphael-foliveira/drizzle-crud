@@ -1,4 +1,4 @@
-import fastify from 'fastify';
+import fastify, { FastifyInstance } from 'fastify';
 import {
   getHome,
   getTasks,
@@ -6,22 +6,54 @@ import {
   getUsers,
   createUser,
 } from './controllers';
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod';
+import { createTaskSchema, createUserSchema } from './schemas';
 
-const app = fastify({ logger: true });
+export const createApp = async () => {
+  const app = fastify({ logger: true });
 
-const registerPlugins = async () => {
-  await app.register(async (app) => {
-    app.get('/', getHome);
-    app.get('/tasks', getTasks);
-    app.post('/tasks', createTask);
-    app.get('/users', getUsers);
-    app.post('/users', createUser);
-  });
-  console.log(app.printRoutes());
+  await app.register(registerPlugins);
+  return app;
+};
+
+const tasksRoutes = async (app: FastifyInstance) => {
+  app.get('/', getTasks);
+  app.post('/', { schema: { body: createTaskSchema } }, createTask);
+};
+
+const usersRoutes = async (app: FastifyInstance) => {
+  app.get('/', getUsers);
+  app.post(
+    '/',
+    {
+      schema: { body: createUserSchema },
+    },
+    createUser,
+  );
+};
+
+const homeRoutes = async (app: FastifyInstance) => {
+  app.get('/', getHome);
+};
+
+const overrideCompilers = async (app: FastifyInstance) => {
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
+};
+
+const registerPlugins = async (app: FastifyInstance) => {
+  await overrideCompilers(app);
+  await app.register(homeRoutes);
+  await app.register(usersRoutes, { prefix: '/users' });
+  await app.register(tasksRoutes, { prefix: '/tasks' });
 };
 
 const main = async () => {
-  await registerPlugins();
+  const app = await createApp();
+
   app.listen({ port: 3000 });
 };
 
