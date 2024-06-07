@@ -5,7 +5,7 @@ import {
   createTask,
   getUsers,
   createUser,
-} from './controllers';
+} from './controllers/controllers';
 import {
   serializerCompiler,
   validatorCompiler,

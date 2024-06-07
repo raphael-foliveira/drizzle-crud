@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { faker } from '@faker-js/faker';
 import { describe, beforeEach, it, expect, afterEach } from 'vitest';
-import { createApp } from './main';
+import { createApp } from '../main';
 import {
   Task,
   User,
@@ -9,9 +9,9 @@ import {
   createUserSchema,
   tasks,
   users,
-} from './schemas';
+} from '../schemas';
 import { z } from 'zod';
-import { database } from './database';
+import { database } from '../database';
 
 describe('Controllers', () => {
   let userItems: User[];
