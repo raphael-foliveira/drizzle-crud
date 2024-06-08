@@ -1,16 +1,14 @@
 import fastify, { FastifyInstance } from 'fastify';
 import {
-  getHome,
-  getTasks,
-  createTask,
-  getUsers,
-  createUser,
-} from './controllers';
-import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
 import { createTaskSchema, createUserSchema } from './schemas';
+import {
+  homeController,
+  tasksController,
+  usersController,
+} from './controllers';
 
 export const createApp = async () => {
   const app = fastify({ logger: true });
@@ -20,23 +18,27 @@ export const createApp = async () => {
 };
 
 const tasksRoutes = async (app: FastifyInstance) => {
-  app.get('/', getTasks);
-  app.post('/', { schema: { body: createTaskSchema } }, createTask);
+  app.get('/', tasksController.getTasks);
+  app.post(
+    '/',
+    { schema: { body: createTaskSchema } },
+    tasksController.createTask,
+  );
 };
 
 const usersRoutes = async (app: FastifyInstance) => {
-  app.get('/', getUsers);
+  app.get('/', usersController.getUsers);
   app.post(
     '/',
     {
       schema: { body: createUserSchema },
     },
-    createUser,
+    usersController.createUser,
   );
 };
 
 const homeRoutes = async (app: FastifyInstance) => {
-  app.get('/', getHome);
+  app.get('/', homeController.getHome);
 };
 
 const overrideCompilers = async (app: FastifyInstance) => {
