@@ -1270,9 +1270,9 @@ has-flag@^4.0.0:
   integrity sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==
 
 hono@^4.1.4:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.4.4.tgz#60eda24bd63dfb379735b9d924016c3c7b1bb329"
-  integrity sha512-zO5+4K8yf1iuKhBZhwmpZ/0LzPMr8Zt1RugEGM1xvOqgh9DyLb7tslOtoBks4bmm5bIcLtzLCXUpYpXOkwpABA==
+  version "4.5.8"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.5.8.tgz#212ee54b214cd90ecc44904b6f00ee58a9af32b8"
+  integrity sha512-pqpSlcdqGkpTTRpLYU1PnCz52gVr0zVR9H5GzMyJWuKQLLEBQxh96q45QizJ2PPX8NATtz2mu31/PKW/Jt+90Q==
 
 html-escaper@^2.0.0:
   version "2.0.2"
