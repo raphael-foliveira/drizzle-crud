@@ -22,7 +22,7 @@ const tasksRoutes = async (app: FastifyInstance) => {
   app.post(
     '/',
     { schema: { body: createTaskSchema } },
-    tasksController.createTask,
+    tasksController.createTask
   );
 };
 
@@ -33,7 +33,7 @@ const usersRoutes = async (app: FastifyInstance) => {
     {
       schema: { body: createUserSchema },
     },
-    usersController.createUser,
+    usersController.createUser
   );
 };
 
