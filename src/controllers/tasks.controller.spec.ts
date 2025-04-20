@@ -10,7 +10,7 @@ import {
 } from '../schemas';
 import { FastifyInstance } from 'fastify';
 import { database } from '../database';
-import { createApp } from '../main';
+import { createApp } from '../app';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 describe('TasksController', () => {
@@ -32,7 +32,7 @@ describe('TasksController', () => {
         title: faker.lorem.word(),
         userId: id,
         completed: false,
-      }),
+      })
     );
 
     taskItems = await database.insert(tasks).values(tasksToCreate).returning();
@@ -40,8 +40,9 @@ describe('TasksController', () => {
   });
 
   afterEach(async () => {
-    await database.delete(users);
     await database.delete(tasks);
+    await database.delete(users);
+    await app.close();
   });
 
   it('should create a task', async () => {

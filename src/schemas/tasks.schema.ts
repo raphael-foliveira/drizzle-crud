@@ -1,6 +1,6 @@
 import { serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
 import { pgTable, integer } from 'drizzle-orm/pg-core';
-import { users } from './users.schema';
+import { User, users } from './users.schema';
 import { relations } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -17,6 +17,9 @@ export const tasks = pgTable('tasks', {
 });
 
 export type Task = typeof tasks.$inferSelect;
+export type TaskDetail = Task & {
+  user: User;
+};
 export type TaskInsert = typeof tasks.$inferInsert;
 
 export const tasksRelations = relations(tasks, ({ one }) => {
@@ -34,3 +37,5 @@ export const createTaskSchema = z.object({
   description: z.string().optional(),
   completed: z.boolean().default(false),
 });
+
+export type CreateTaskSchema = z.infer<typeof createTaskSchema>;

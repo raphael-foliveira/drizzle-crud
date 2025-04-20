@@ -4,8 +4,9 @@ import type { Config } from 'drizzle-kit';
 export default {
   schema: 'src/schemas/*.ts',
   out: 'migrations',
-  driver: 'pg',
+  dialect: 'postgresql',
   dbCredentials: {
+    ssl: false,
     host: 'localhost',
     port: 5432,
     user: 'postgres',

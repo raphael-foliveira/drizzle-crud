@@ -11,7 +11,7 @@ services:
       DB_NAME: postgres
     volumes:
       - ./src:/app/src
-    command: npm run dev
+    command: yarn dev
 
   database:
     image: postgres:alpine

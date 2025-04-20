@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { database } from '../database';
-import { createApp } from '../main';
+import { createApp } from '../app';
 import {
   User,
   createUserSchema,
@@ -32,7 +32,7 @@ describe('users', () => {
         title: faker.lorem.word(),
         userId: id,
         completed: false,
-      }),
+      })
     );
 
     taskItems = await database.insert(tasks).values(tasksToCreate).returning();
@@ -40,8 +40,10 @@ describe('users', () => {
   });
 
   afterEach(async () => {
-    await database.delete(users);
+    // Delete tasks first due to foreign key, then users
     await database.delete(tasks);
+    await database.delete(users);
+    await app.close();
   });
   it('should create an user', async () => {
     const payload: z.infer<typeof createUserSchema> = {
