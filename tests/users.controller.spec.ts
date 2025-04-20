@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { database } from '../database';
-import { createApp } from '../app';
+import { database } from '../src/database';
+import { createApp } from '../src/app';
 import {
   User,
   createUserSchema,
@@ -10,7 +10,7 @@ import {
   createTaskSchema,
   tasks,
   Task,
-} from '../schemas';
+} from '../src/schemas';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 describe('users', () => {

@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { database } from '../database';
 import { Task, TaskDetail, TaskInsert, tasks, users } from '../schemas';
 
-export const getTasks = async (): Promise<TaskDetail[]> => {
+export const getTasks = async () => {
   return database
     .select({
       id: tasks.id,
@@ -22,7 +22,7 @@ export const getTasks = async (): Promise<TaskDetail[]> => {
     .leftJoin(users, eq(tasks.userId, users.id));
 };
 
-export const createTask = async (schema: TaskInsert): Promise<Task> => {
+export const createTask = async (schema: TaskInsert) => {
   const [task] = await database.insert(tasks).values(schema).returning();
   return task;
 };

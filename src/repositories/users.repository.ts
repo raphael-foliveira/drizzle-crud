@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { database } from '../database';
 import { User, UserDetail, UserInsert, tasks, users } from '../schemas';
 
-export const getUsers = async (): Promise<UserDetail[]> => {
+export const getUsers = async () => {
   const result = await database
     .select()
     .from(users)
@@ -27,7 +27,7 @@ export const getUsers = async (): Promise<UserDetail[]> => {
   return usersResult;
 };
 
-export const createUser = async (schema: UserInsert): Promise<User> => {
+export const createUser = async (schema: UserInsert) => {
   const [user] = await database.insert(users).values(schema).returning();
   return user;
 };

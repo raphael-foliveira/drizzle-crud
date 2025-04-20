@@ -7,10 +7,10 @@ import {
   createUserSchema,
   tasks,
   users,
-} from '../schemas';
+} from '../src/schemas';
 import { FastifyInstance } from 'fastify';
-import { database } from '../database';
-import { createApp } from '../app';
+import { database } from '../src/database';
+import { createApp } from '../src/app';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 describe('TasksController', () => {
